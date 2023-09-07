@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-// import * as faceapi from "@vladmandic/face-api";
 import * as faceapi from "face-api.js";
 import loader from "../assets/loader.gif";
 
@@ -59,7 +58,7 @@ const WebcamComponent = () => {
       const displaySize = { width: videoWidth, height: videoHeight };
       faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
-        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()) // Use tinyFaceDetectorOptions
+        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
         .withFaceDescriptors();
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
@@ -68,11 +67,14 @@ const WebcamComponent = () => {
         .getContext("2d")
         .clearRect(0, 0, videoWidth, videoHeight);
 
+      // console.log("resizedDetections", resizedDetections);
+
       // Draw face detections on canvas
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-      faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-      console.log("detections", detections);
+      faceapi.draw.withFaceDescriptors(canvasRef.current, resizedDetections);
+
+      // console.log("detections", detections);
     }, 100);
   };
 
