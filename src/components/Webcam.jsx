@@ -1,82 +1,78 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as faceapi from "@vladmandic/face-api";
+// import * as faceapi from "@vladmandic/face-api";
+import * as faceapi from "face-api.js";
 
 const WebcamComponent = () => {
-  const [stream, setStream] = useState(null);
-
+  // initiase states---
   const [initializing, setInitializing] = useState(true);
   const videoRef = useRef();
   const canvasRef = useRef();
   const videoHeight = 400;
   const videoWidth = 400;
 
-  // load models
+  // loading video
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = "/models"; // Use process.env.PUBLIC_URL
-      console.log("MODEL_URL", MODEL_URL);
-      setInitializing(false);
-
+      const MODEL_URL = "./models"; // Update to the correct path
+      setInitializing(true);
       Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-      ]).then(startVideo);
+        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+      ]).then(startWebcam); // Start the webcam after the models are loaded
     };
 
     loadModels();
 
     // Clean up the stream when the component unmounts
     return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      if (videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);
 
-  const startVideo = () => {
-    navigator.getUserMedia(
-      {
-        video: {},
-      },
-      (stream) => {
-        videoRef.current.srcObject = stream;
-        videoRef.current.onloadedmetadata = () => {
-          // Now that the video has loaded metadata, we can initialize face detection
-          detectFaces();
-        };
-      },
-      (err) => console.error("getUserMedia Error: ", err)
-    );
+  const startWebcam = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+      videoRef.current.srcObject = stream;
+      videoRef.current.onloadedmetadata = () => {
+        // Now that the video has loaded metadata, we can initialize face detection
+        setInitializing(false); // Set initializing to false after starting the video
+      };
+    } catch (error) {
+      console.error("getUserMedia Error: ", error);
+    }
   };
 
-  const detectFaces = async () => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-      const canvas = faceapi.createCanvasFromMedia(video);
-      const displaySize = { width: video.width, height: video.height };
-      faceapi.matchDimensions(canvas, displaySize);
-
-      // Detect faces
+  const handleVideoPlay = () => {
+    setInterval(async () => {
+      if (initializing) {
+        setInitializing(false);
+      }
+      canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
+        videoRef.current
+      );
+      const displaySize = { width: videoWidth, height: videoHeight };
+      faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
-        .detectAllFaces(video)
+        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()) // Use tinyFaceDetectorOptions
         .withFaceLandmarks()
         .withFaceDescriptors();
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
-
       // Clear previous detections
-      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      canvasRef.current
+        .getContext("2d")
+        .clearRect(0, 0, videoWidth, videoHeight);
 
       // Draw face detections on canvas
-      faceapi.draw.drawDetections(canvas, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-
-      // Append canvas to the UI
-      const faceCanvas = document.getElementById("face-canvas");
-      faceCanvas.innerHTML = "";
-      faceCanvas.appendChild(canvas);
-    }
+      faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+      faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+      faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+      console.log("detections", detections);
+    }, 100);
   };
 
   return (
@@ -84,7 +80,7 @@ const WebcamComponent = () => {
       <div className="w-1/2 h-full bg-gray-200 p-4">
         <h2> {initializing ? "Wait" : "Go now"} </h2>
         <h2 className="text-2xl font-bold mb-4">Webcam Feed</h2>
-        <div id="face-canvas" className="w-full h-full"></div>
+        <canvas ref={canvasRef} className="w-full h-full"></canvas>
       </div>
       <div className="w-1/2 h-full relative">
         <video
@@ -92,11 +88,11 @@ const WebcamComponent = () => {
           className="h-full w-full object-cover p-2 rounded-xl"
           autoPlay
           playsInline
+          onPlay={handleVideoPlay}
           muted
           height={videoHeight}
           width={videoWidth}
         />
-        <canvas ref={canvasRef}></canvas>
       </div>
     </div>
   );
