@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 // import * as faceapi from "@vladmandic/face-api";
 import * as faceapi from "face-api.js";
+import loader from "../assets/loader.gif";
 
 const WebcamComponent = () => {
   // initiase states---
@@ -76,16 +77,20 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/2 h-full bg-gray-200 p-4">
-        <h2> {initializing ? "Wait" : "Go now"} </h2>
-        <h2 className="text-2xl font-bold mb-4">Webcam Feed</h2>
-        <canvas ref={canvasRef} className="w-full h-full"></canvas>
+    <div className=" h-screen w-screen bg-blue-900 flex flex-row justify-center items-center">
+      {initializing && (
+        <div className="flex flex-col bg-white  justify-center items-center text-center w-screen h-screen absolute top-0 right-0">
+          <img src={loader} alt="loader" className="w-2/12" />
+          <h2 className="text-2xl text-gray-500 ">Please wait...</h2>
+        </div>
+      )}
+      <div className="w-1/2 h-full  ">
+        <canvas ref={canvasRef} className="w-full h-full "></canvas>
       </div>
-      <div className="w-1/2 h-full relative">
+      <div className="w-1/2 h-full  flex flex-row justify-center items-center">
         <video
           ref={videoRef}
-          className="h-full w-full object-cover p-2 rounded-xl"
+          className="h-10/12 w-10/12 object-cover shadow-2xl rounded-xl border-2 border-gray-300"
           autoPlay
           playsInline
           onPlay={handleVideoPlay}
