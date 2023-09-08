@@ -114,9 +114,18 @@ const WebcamComponent = () => {
             width={videoWidth}
           />
         </div>
+
         <div className="flex flex-row justify-between gap-2 w-full  ">
+          {(!expressions && !age) ||
+            initializing ||
+            (!gender && (
+              <div className="flex flex-row  gap-2 w-full h-full absolute top-0 right-0 justify-center text-white mt-10 text-center ">
+                Please wait...
+              </div>
+            ))}
+
           {expressions.length > 0 && (
-            <div className="w-full shadow-xl rounded-lg text-white p-4">
+            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
               <h2 className="mb-2">
                 Detected Expressions:{" "}
                 {expressions.length > 0 ? expressions.join(", ") : "None"}
@@ -125,12 +134,12 @@ const WebcamComponent = () => {
           )}
 
           {age !== null && (
-            <div className="w-full shadow-xl rounded-lg text-white p-4">
+            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
               <p>Age: {age.toFixed(1)} years</p>
             </div>
           )}
           {gender !== null && (
-            <div className="w-full shadow-xl rounded-lg text-white p-4">
+            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
               <p>Gender: {gender}</p>
             </div>
           )}
