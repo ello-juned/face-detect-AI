@@ -13,10 +13,13 @@ const WebcamComponent = () => {
   // loading video
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = "./models"; // Update to the correct path
+      const MODEL_URL = "/models"; // Update to the correct path
       setInitializing(true);
       Promise.all([
         await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
+        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+
         await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
       ]).then(startWebcam); // Start the webcam after the models are loaded
@@ -59,8 +62,11 @@ const WebcamComponent = () => {
       faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors();
+        .withAgeAndGender()
+        .withFaceExpressions();
+
+      // .withFaceLandmarks()
+      // .withFaceDescriptors();
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       // Clear previous detections
       canvasRef.current
@@ -71,8 +77,7 @@ const WebcamComponent = () => {
 
       // Draw face detections on canvas
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-      faceapi.draw.withFaceDescriptors(canvasRef.current, resizedDetections);
+      faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
       // console.log("detections", detections);
     }, 100);
