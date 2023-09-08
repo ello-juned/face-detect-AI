@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
-import loader from "../assets/loader.gif";
+import Loading from "./Loading";
 
 const WebcamComponent = () => {
   // initiase states---
@@ -17,11 +17,9 @@ const WebcamComponent = () => {
       setInitializing(true);
       Promise.all([
         await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
-        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-
         await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]).then(startWebcam); // Start the webcam after the models are loaded
     };
 
@@ -62,35 +60,24 @@ const WebcamComponent = () => {
       faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-        .withAgeAndGender()
+        .withFaceLandmarks()
         .withFaceExpressions();
-
-      // .withFaceLandmarks()
-      // .withFaceDescriptors();
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       // Clear previous detections
       canvasRef.current
         .getContext("2d")
         .clearRect(0, 0, videoWidth, videoHeight);
 
-      // console.log("resizedDetections", resizedDetections);
-
       // Draw face detections on canvas
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+      faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
       faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-
-      // console.log("detections", detections);
     }, 100);
   };
 
   return (
     <div className=" h-screen w-screen bg-blue-900 flex flex-row justify-center items-center">
-      {initializing && (
-        <div className="flex flex-col bg-white  justify-center items-center text-center w-screen h-screen absolute top-0 right-0">
-          <img src={loader} alt="loader" className="w-2/12" />
-          <h2 className="text-2xl text-gray-500 ">Please wait...</h2>
-        </div>
-      )}
+      {initializing && <Loading />}
       <div className="w-1/2 h-full  ">
         <canvas ref={canvasRef} className="w-full h-full "></canvas>
       </div>
