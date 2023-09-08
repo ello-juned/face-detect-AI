@@ -5,6 +5,7 @@ import Loading from "./Loading";
 const WebcamComponent = () => {
   // initiase states---
   const [initializing, setInitializing] = useState(true);
+  const [expressions, setExpressions] = useState([]);
   const videoRef = useRef();
   const canvasRef = useRef();
   const videoHeight = 400;
@@ -20,6 +21,7 @@ const WebcamComponent = () => {
         await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
         await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+        await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
       ]).then(startWebcam); // Start the webcam after the models are loaded
     };
 
@@ -61,7 +63,9 @@ const WebcamComponent = () => {
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
-        .withFaceExpressions();
+        .withFaceExpressions()
+        .withAgeAndGender();
+
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
       // Clear previous detections
       canvasRef.current
@@ -71,27 +75,50 @@ const WebcamComponent = () => {
       // Draw face detections on canvas
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-      faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+
+      // Extract and set detected expressions
+      if (resizedDetections.length > 0) {
+        const expressionsObj = resizedDetections[0].expressions;
+        const detectedExpressions = Object.keys(expressionsObj).filter(
+          (expression) => expressionsObj[expression] > 0.7
+        );
+        setExpressions(detectedExpressions);
+      } else {
+        setExpressions([]);
+      }
     }, 100);
   };
 
   return (
-    <div className=" h-screen w-screen bg-blue-900 flex flex-row justify-center items-center">
+    <div className="h-screen w-screen  flex flex-col justify-between items-center bg-[#2046F5] p-4">
       {initializing && <Loading />}
-      <div className="w-1/2 h-full  ">
-        <canvas ref={canvasRef} className="w-full h-full "></canvas>
+
+      <div className="h-3/12  w-full flex flex-row justify-between  items-center gap-4">
+        <div className="h-auto w-2/12">
+          <video
+            ref={videoRef}
+            className="object-cover shadow-2xl rounded-xl border-2 border-gray-300"
+            autoPlay
+            playsInline
+            onPlay={handleVideoPlay}
+            muted
+            height={videoHeight}
+            width={videoWidth}
+          />
+        </div>
+        <div className="w-full">
+          <h2>
+            Detected Expressions:{" "}
+            {expressions.length > 0 ? expressions.join(", ") : "None"}
+          </h2>
+        </div>
       </div>
-      <div className="w-1/2 h-full  flex flex-row justify-center items-center">
-        <video
-          ref={videoRef}
-          className="h-10/12 w-10/12 object-cover shadow-2xl rounded-xl border-2 border-gray-300"
-          autoPlay
-          playsInline
-          onPlay={handleVideoPlay}
-          muted
-          height={videoHeight}
+      <div className="w-full h-9/12  flex flex-row justify-center items-center bg-[#2046F5]">
+        <canvas
+          ref={canvasRef}
           width={videoWidth}
-        />
+          height={videoHeight}
+        ></canvas>
       </div>
     </div>
   );
