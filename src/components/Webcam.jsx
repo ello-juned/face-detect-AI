@@ -4,33 +4,29 @@ import Loading from "./Loading";
 import Face from "./Face";
 
 const WebcamComponent = () => {
-  // initialize states---
   const [initializing, setInitializing] = useState(true);
   const [expressions, setExpressions] = useState([]);
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(null);
   const videoRef = useRef();
-  const canvasRef = useRef();
+  const videoCanvasRef = useRef();
   const videoHeight = 400;
   const videoWidth = 400;
 
-  // loading video and models
   useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = "/models"; // Update to the correct path
       setInitializing(true);
-      Promise.all([
-        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-        await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
-      ]).then(startWebcam); // Start the webcam after the models are loaded
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+      await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+      await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+      await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+      startWebcam();
     };
 
     loadModels();
 
-    // Clean up the stream when the component unmounts
     return () => {
       if (videoRef.current.srcObject) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
@@ -45,8 +41,7 @@ const WebcamComponent = () => {
       });
       videoRef.current.srcObject = stream;
       videoRef.current.onloadedmetadata = () => {
-        // Now that the video has loaded metadata, we can initialize face detection
-        setInitializing(false); // Set initializing to false after starting the video
+        setInitializing(false);
       };
     } catch (error) {
       console.error("getUserMedia Error: ", error);
@@ -58,11 +53,8 @@ const WebcamComponent = () => {
       if (initializing) {
         setInitializing(false);
       }
-      canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-        videoRef.current
-      );
       const displaySize = { width: videoWidth, height: videoHeight };
-      faceapi.matchDimensions(canvasRef.current, displaySize);
+      faceapi.matchDimensions(videoCanvasRef.current, displaySize);
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
@@ -70,14 +62,13 @@ const WebcamComponent = () => {
         .withAgeAndGender();
 
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
-      // Clear previous detections
-      canvasRef.current
-        .getContext("2d")
-        .clearRect(0, 0, videoWidth, videoHeight);
 
-      // Draw face detections on canvas
-      faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-      faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+      // Clear previous dots
+      const ctx = videoCanvasRef.current.getContext("2d");
+      ctx.clearRect(0, 0, videoWidth, videoHeight);
+
+      // Draw face landmarks (dots) on the video feed
+      faceapi.draw.drawFaceLandmarks(videoCanvasRef.current, resizedDetections);
 
       // Extract and set detected expressions
       if (resizedDetections.length > 0) {
@@ -99,27 +90,28 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center p-2 ">
+    <div className="h-screen w-screen flex flex-row justify-between items-center  rounded-3xl border-2 bg-blue-700  ">
       {initializing && <Loading />}
 
-      <div className="h-full w-5/12 flex  justify-center items-center   p-2">
+      <div className="h-full w-5/12 flex justify-center items-center  relative">
         <video
           ref={videoRef}
-          className=" h-full w-full"
+          className="h-full w-full object-fill"
           autoPlay
           playsInline
           onPlay={handleVideoPlay}
           muted
+          Object
         />
         <canvas
-          ref={canvasRef}
-          width={videoWidth}
-          height={videoHeight}
-          className="absolute"
+          ref={videoCanvasRef}
+          width="100%"
+          height="100%"
+          className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col  bg-gray-400 ">
-        {/* separated component for face only ( age , expressions, and gender) */}
+      <div className="w-7/12 h-full flex flex-col ">
+        {/* separated component for face only (age, expressions, and gender) */}
         <Face expressions={expressions} age={age} gender={gender} />
       </div>
     </div>
