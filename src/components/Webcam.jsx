@@ -34,15 +34,6 @@ const WebcamComponent = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // Update age, gender, and expressions only if they are not null or undefined
-    if (age !== null && gender !== null && expressions.length > 0) {
-      // You can add your logic here to handle the updated data
-      // For example, you can send it to a server or perform other actions.
-      console.log("Updated data:", age, gender, expressions);
-    }
-  }, [age, gender, expressions]);
-
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -82,13 +73,15 @@ const WebcamComponent = () => {
         const detectedExpressions = Object.keys(expressionsObj).filter(
           (expression) => expressionsObj[expression] > 0.7
         );
-        setExpressions(detectedExpressions);
 
         // Extract and set age and gender
         setAge(resizedDetections[0].age);
         setGender(resizedDetections[0].gender);
+        if (detectedExpressions.length > 0) {
+          setExpressions(detectedExpressions);
+        }
       }
-    }, 100);
+    }, 1000);
   };
 
   return (

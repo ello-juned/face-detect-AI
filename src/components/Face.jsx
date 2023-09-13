@@ -5,7 +5,6 @@ import bgImg from "../assets/bg.jpeg";
 
 const Face = (props) => {
   const { expressions, age, gender } = props; // descrtructing all props...
-
   //  show hide male/female icon based on gender...
   const isMale = gender === "male";
 
