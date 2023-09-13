@@ -90,18 +90,17 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center  gap-2 p-4   ">
+    <div className="h-screen w-screen flex flex-row justify-between items-center     ">
       {initializing && <Loading />}
 
       <div className="h-full w-5/12 flex justify-center items-center  relative">
         <video
           ref={videoRef}
-          className="h-full w-full object-fill rounded-xl"
+          className="h-full w-full object-fill"
           autoPlay
           playsInline
           onPlay={handleVideoPlay}
           muted
-          Object
         />
         <canvas
           ref={videoCanvasRef}
@@ -110,10 +109,12 @@ const WebcamComponent = () => {
           className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col rounded-xl bg-blue-200 ">
+      <div className="w-7/12 h-full flex flex-col bg-blue-100">
         {/* separated component for face only (age, expressions, and gender) */}
         {!initializing && (
-          <Face expressions={expressions} age={age} gender={gender} />
+          <>
+            <Face expressions={expressions} age={age} gender={gender} />
+          </>
         )}
       </div>
     </div>
