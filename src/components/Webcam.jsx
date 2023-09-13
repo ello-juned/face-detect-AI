@@ -67,6 +67,8 @@ const WebcamComponent = () => {
       const ctx = videoCanvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, videoWidth, videoHeight);
 
+      faceapi.draw.drawFaceLandmarks(videoCanvasRef.current, resizedDetections);
+
       // Extract and set detected expressions
       if (resizedDetections.length > 0) {
         const expressionsObj = resizedDetections[0].expressions;
