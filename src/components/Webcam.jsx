@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
 import Loading from "./Loading";
+import Face from "./Face";
 
 const WebcamComponent = () => {
   // initialize states---
@@ -98,61 +99,28 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-between items-center bg-[#2046F5] p-4">
+    <div className="h-screen w-screen flex flex-row justify-between items-center p-2 ">
       {initializing && <Loading />}
 
-      <div className="h-3/12 w-full flex flex-row justify-between items-center gap-4">
-        <div className="h-auto w-2/12">
-          <video
-            ref={videoRef}
-            className="object-cover shadow-2xl rounded-xl border-2 border-gray-300"
-            autoPlay
-            playsInline
-            onPlay={handleVideoPlay}
-            muted
-            height={videoHeight}
-            width={videoWidth}
-          />
-        </div>
-
-        <div className="flex flex-row justify-between gap-2 w-full  ">
-          {(!expressions && !age) ||
-            initializing ||
-            (!gender && (
-              <div className="flex flex-row  gap-2 w-full h-full absolute top-0 right-0 justify-center text-white mt-10 text-center ">
-                Please wait...
-              </div>
-            ))}
-
-          {expressions.length > 0 && (
-            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
-              <h2 className="mb-2">
-                Detected Expressions:{" "}
-                {expressions.length > 0 ? expressions.join(", ") : "None"}
-              </h2>
-            </div>
-          )}
-
-          {age !== null && (
-            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
-              <p>Age: {age.toFixed(1)} years</p>
-            </div>
-          )}
-          {gender !== null && (
-            <div className="w-full shadow-xl rounded-lg bg-slate-300 text-white p-4">
-              <p>Gender: {gender}</p>
-            </div>
-          )}
-
-          {/* Add additional cards here if needed */}
-        </div>
-      </div>
-      <div className="w-full h-9/12 flex flex-row justify-center items-center bg-[#2046F5]">
+      <div className="h-full w-5/12 flex  justify-center items-center   p-2">
+        <video
+          ref={videoRef}
+          className=" h-full w-full"
+          autoPlay
+          playsInline
+          onPlay={handleVideoPlay}
+          muted
+        />
         <canvas
           ref={canvasRef}
           width={videoWidth}
           height={videoHeight}
+          className="absolute"
         ></canvas>
+      </div>
+      <div className="w-7/12 h-full flex flex-col  bg-gray-400 ">
+        {/* separated component for face only ( age , expressions, and gender) */}
+        <Face expressions={expressions} age={age} gender={gender} />
       </div>
     </div>
   );
