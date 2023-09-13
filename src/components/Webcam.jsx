@@ -34,6 +34,15 @@ const WebcamComponent = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Update age, gender, and expressions only if they are not null or undefined
+    if (age !== null && gender !== null && expressions.length > 0) {
+      // You can add your logic here to handle the updated data
+      // For example, you can send it to a server or perform other actions.
+      console.log("Updated data:", age, gender, expressions);
+    }
+  }, [age, gender, expressions]);
+
   const startWebcam = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -67,9 +76,6 @@ const WebcamComponent = () => {
       const ctx = videoCanvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, videoWidth, videoHeight);
 
-      // Draw face landmarks (dots) on the video feed
-      faceapi.draw.drawFaceLandmarks(videoCanvasRef.current, resizedDetections);
-
       // Extract and set detected expressions
       if (resizedDetections.length > 0) {
         const expressionsObj = resizedDetections[0].expressions;
@@ -81,19 +87,15 @@ const WebcamComponent = () => {
         // Extract and set age and gender
         setAge(resizedDetections[0].age);
         setGender(resizedDetections[0].gender);
-      } else {
-        setExpressions([]);
-        setAge(null);
-        setGender(null);
       }
-    }, 1000);
+    }, 100);
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center     ">
+    <div className="h-screen w-screen flex flex-row justify-between items-center">
       {initializing && <Loading />}
 
-      <div className="h-full w-5/12 flex justify-center items-center  relative">
+      <div className="h-full w-5/12 flex justify-center items-center relative">
         <video
           ref={videoRef}
           className="h-full w-full object-fill"

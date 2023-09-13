@@ -37,7 +37,7 @@ const Face = (props) => {
         <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
           {age && (
             <>
-              <p>{age?.toFixed(1)}</p>
+              <p className="text-lg">{age?.toFixed(1)}</p>
               <p className="text-xl  tracking-wide">Age</p>
             </>
           )}
@@ -46,7 +46,7 @@ const Face = (props) => {
         <div className="w-full h-[160px]   flex flex-col justify-center items-center text-center gap-10">
           {expressions.length > 0 && (
             <>
-              <p>{expressions}</p>
+              <p className="text-lg">{expressions}</p>
               <p className="text-xl tracking-wide">Expression</p>
             </>
           )}
