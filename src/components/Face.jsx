@@ -1,5 +1,5 @@
 import React from "react";
-import CardLoader from "./cardLoader";
+import CardLoader from "./CardLoader";
 import maleIcon from "../assets/maleIcon.avif";
 import femalIcon from "../assets/femalIcon.avif";
 
