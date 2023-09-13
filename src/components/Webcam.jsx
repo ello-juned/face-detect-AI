@@ -86,17 +86,17 @@ const WebcamComponent = () => {
         setAge(null);
         setGender(null);
       }
-    }, 100);
+    }, 1000);
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center  rounded-3xl border-2 bg-blue-700  ">
+    <div className="h-screen w-screen flex flex-row justify-between items-center  gap-2 p-4   ">
       {initializing && <Loading />}
 
       <div className="h-full w-5/12 flex justify-center items-center  relative">
         <video
           ref={videoRef}
-          className="h-full w-full object-fill"
+          className="h-full w-full object-fill rounded-xl"
           autoPlay
           playsInline
           onPlay={handleVideoPlay}
@@ -110,9 +110,11 @@ const WebcamComponent = () => {
           className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col ">
+      <div className="w-7/12 h-full flex flex-col rounded-xl bg-blue-200 ">
         {/* separated component for face only (age, expressions, and gender) */}
-        <Face expressions={expressions} age={age} gender={gender} />
+        {!initializing && (
+          <Face expressions={expressions} age={age} gender={gender} />
+        )}
       </div>
     </div>
   );

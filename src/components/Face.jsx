@@ -12,13 +12,13 @@ const Face = (props) => {
 
   return (
     <div
-      className="flex flex-col  text-white justify-between gap-2 w-full bg-cover bg-center bg-no-repeat p-2 "
+      className="flex flex-col  text-white justify-between gap-2 w-full bg-cover bg-center bg-no-repeat p-2 rounded-xl "
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <h2 className="text-2xl ">Face AI</h2>
 
       <div className="flex flex-row">
-        <div className="w-full h-[180px]   p-4  flex flex-col justify-center items-center text-center gap-4">
+        <div className="w-full h-[160px]    p-4  flex flex-col justify-center items-center text-center gap-4">
           {gender && (
             <>
               <img
@@ -28,27 +28,29 @@ const Face = (props) => {
                 height={60}
                 className="rounded-full"
               />
-              <p className="text-xl"> {gender}</p>
+              <p className="text-xl tracking-wide">
+                {gender.charAt(0).toUpperCase() + gender.slice(1)}
+              </p>
             </>
           )}
           {!gender && <CardLoader />}
         </div>
 
-        <div className="w-full h-[180px]     p-4 flex flex-col justify-center items-center text-center gap-4">
+        <div className="w-full h-[160px]     p-4 flex flex-col justify-center items-center text-center gap-10">
           {age && (
             <>
               <p>{age?.toFixed(1)}</p>
-              <p className="text-xl mt-2">Age</p>
+              <p className="text-xl  tracking-wide">Age</p>
             </>
           )}
           {!age && <CardLoader />}
         </div>
 
-        <div className="w-full h-[180px]   p-4  flex flex-col justify-center items-center text-center gap-4">
+        <div className="w-full h-[160px]   p-4  flex flex-col justify-center items-center text-center gap-10">
           {expressions.length > 0 && (
             <>
               <p>{expressions}</p>
-              <p className="text-xl mt-2">Expression</p>
+              <p className="text-xl tracking-wide">Expression</p>
             </>
           )}
           {expressions.length <= 0 && <CardLoader />}
