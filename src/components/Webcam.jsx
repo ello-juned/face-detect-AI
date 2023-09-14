@@ -140,13 +140,13 @@ const WebcamComponent = () => {
       </div>
 
       <div className="flex flex-col gap-2 h-screen bg-gray-800 w-7/12">
-        <div className="flex-grow">
+        <div className="h-[30%]">
           {!initializing && (
             <Face expressions={expressions} age={age} gender={gender} />
           )}
         </div>
-        <div className="flex-grow">{!initializing && <Lifestyle />}</div>
-        <div className="flex-grow">
+        <div className="h-[30%]">{!initializing && <Lifestyle />}</div>
+        <div className="h-[40%]">
           {!initializing && <Skin skinFeatures={skinFeatures} />}
         </div>
       </div>

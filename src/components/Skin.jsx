@@ -1,15 +1,15 @@
 import React from "react";
-import bgImg from "../assets/bg.jpeg";
+import bgImg from "../assets/bg.png";
 import { featureData } from "../common";
 import { CircularProgressbar } from "react-circular-progressbar";
 
 const Skin = ({ skinFeatures }) => {
   return (
     <div
-      className="flex flex-col h-full text-white justify-between gap-2 p-2 w-full   bg-cover bg-center bg-no-repeat"
+      className="flex flex-col h-full text-white justify-between  w-full   bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
-      <h2 className="text-2xl">Skin AI</h2>
+      <h2 className="text-2xl ml-3">Skin AI</h2>
 
       <div className="w-full  flex flex-row justify-center items-center text-center ">
         {featureData?.map((feature) => (
@@ -23,6 +23,7 @@ const Skin = ({ skinFeatures }) => {
                   value={skinFeatures[feature?.name]}
                   maxValue={5}
                   text={skinFeatures[feature?.name]}
+                  strokeWidth={5}
                 />
                 <p className="text-2xl tracking-wider ">{feature?.label}</p>
               </>
