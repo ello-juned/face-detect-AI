@@ -119,7 +119,7 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center">
+    <div className="h-screen w-screen flex flex-row justify-between items-center border-2 border-white overflow-hidden">
       {initializing && <Loading />}
 
       <div className="h-full w-5/12 flex justify-center items-center relative">

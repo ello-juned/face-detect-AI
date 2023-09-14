@@ -56,3 +56,16 @@ export const mapPigmentation = (pigmentationValue) => {
     return 4; // Severe pigmentation
   }
 };
+
+export const dummyData = [
+  {
+    title: "AIR QUALITY",
+    value: 120,
+    description: "Unhealthy",
+  },
+  {
+    title: "UV INDEX",
+    value: 12,
+    description: "Very High",
+  },
+];

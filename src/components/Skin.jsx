@@ -25,7 +25,9 @@ const Skin = ({ skinFeatures }) => {
                   text={skinFeatures[feature?.name]}
                   strokeWidth={5}
                 />
-                <p className="text-2xl tracking-wider ">{feature?.label}</p>
+                <p className="text-2xl tracking-wider text-primaryTextColor ">
+                  {feature?.label}
+                </p>
               </>
             )}
           </div>
