@@ -2,12 +2,43 @@ import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
 import Loading from "./Loading";
 import Face from "./Face";
+import Skin from "./Skin";
+
+// Define mapping functions for skin features
+const mapSkinColor = (value) => {
+  // Define your own logic to map the skin color value to text description
+  if (value < 0.3) return "Light";
+  if (value < 0.6) return "Medium";
+  return "Dark";
+};
+
+const mapFreckles = (value) => {
+  // Define your own logic to map the freckles value to text description
+  if (value < 0.2) return "Few";
+  if (value < 0.5) return "Some";
+  return "Many";
+};
+
+const mapWrinkles = (value) => {
+  // Define your own logic to map the wrinkles value to text description
+  if (value < 0.4) return "Low";
+  if (value < 0.7) return "Medium";
+  return "High";
+};
 
 const WebcamComponent = () => {
   const [initializing, setInitializing] = useState(true);
   const [expressions, setExpressions] = useState([]);
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(null);
+  const [skinFeatures, setSkinFeatures] = useState({
+    skinColor: "",
+    freckles: "",
+    wrinkles: "",
+    // Add more features as needed
+  });
+
+  console.log("skinFeatures", skinFeatures);
   const videoRef = useRef();
   const videoCanvasRef = useRef();
   const videoHeight = 400;
@@ -59,7 +90,8 @@ const WebcamComponent = () => {
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
         .withFaceExpressions()
-        .withAgeAndGender();
+        .withAgeAndGender()
+        .withFaceDescriptors();
 
       const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
@@ -75,6 +107,18 @@ const WebcamComponent = () => {
         const detectedExpressions = Object.keys(expressionsObj).filter(
           (expression) => expressionsObj[expression] > 0.7
         );
+        const faceDescriptor = resizedDetections[0].descriptor;
+
+        // Map numerical values to text descriptions for skin features
+        const mappedFeatures = {
+          skinColor: mapSkinColor(faceDescriptor[0]),
+          freckles: mapFreckles(faceDescriptor[1]),
+          wrinkles: mapWrinkles(faceDescriptor[2]),
+          // Add more features as needed
+        };
+
+        // Update state with mapped features
+        setSkinFeatures(mappedFeatures);
 
         // Extract and set age and gender
         setAge(resizedDetections[0].age);
@@ -106,11 +150,12 @@ const WebcamComponent = () => {
           className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col bg-blue-100">
+      <div className="w-7/12 h-full flex flex-col gap-4 bg-blue-100">
         {/* separated component for face only (age, expressions, and gender) */}
         {!initializing && (
           <>
             <Face expressions={expressions} age={age} gender={gender} />
+            <Skin skinFeatures={skinFeatures} />
           </>
         )}
       </div>

@@ -36,7 +36,7 @@ const Face = (props) => {
         <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
           {age && (
             <>
-              <p className="text-lg">{age?.toFixed(1)}</p>
+              <p className="text-lg">{Math.round(age?.toFixed(1))}</p>
               <p className="text-xl  tracking-wide">Age</p>
             </>
           )}
