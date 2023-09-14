@@ -3,28 +3,13 @@ import * as faceapi from "face-api.js";
 import Loading from "./Loading";
 import Face from "./Face";
 import Skin from "./Skin";
-
-// Define mapping functions for skin features
-const mapSkinColor = (value) => {
-  // Define your own logic to map the skin color value to text description
-  if (value < 0.3) return "Light";
-  if (value < 0.6) return "Medium";
-  return "Dark";
-};
-
-const mapFreckles = (value) => {
-  // Define your own logic to map the freckles value to text description
-  if (value < 0.2) return "Few";
-  if (value < 0.5) return "Some";
-  return "Many";
-};
-
-const mapWrinkles = (value) => {
-  // Define your own logic to map the wrinkles value to text description
-  if (value < 0.4) return "Low";
-  if (value < 0.7) return "Medium";
-  return "High";
-};
+import {
+  mapAcne,
+  mapPigmentation,
+  mapPores,
+  // mapSkinColor,
+  mapWrinkles,
+} from "../common";
 
 const WebcamComponent = () => {
   const [initializing, setInitializing] = useState(true);
@@ -33,12 +18,12 @@ const WebcamComponent = () => {
   const [gender, setGender] = useState(null);
   const [skinFeatures, setSkinFeatures] = useState({
     skinColor: "",
-    freckles: "",
     wrinkles: "",
-    // Add more features as needed
+    acne: "",
+    pores: "",
+    pigmentation: "",
   });
 
-  console.log("skinFeatures", skinFeatures);
   const videoRef = useRef();
   const videoCanvasRef = useRef();
   const videoHeight = 400;
@@ -101,7 +86,7 @@ const WebcamComponent = () => {
 
       faceapi.draw.drawFaceLandmarks(videoCanvasRef.current, resizedDetections);
 
-      // Extract and set detected expressions
+      // Extract and set detected expressions and additional features
       if (resizedDetections.length > 0) {
         const expressionsObj = resizedDetections[0].expressions;
         const detectedExpressions = Object.keys(expressionsObj).filter(
@@ -109,12 +94,21 @@ const WebcamComponent = () => {
         );
         const faceDescriptor = resizedDetections[0].descriptor;
 
+        const [
+          // skinColorValue,
+          wrinklesValue,
+          poresValue,
+          acneValue,
+          pigmentationValue,
+        ] = faceDescriptor;
+
         // Map numerical values to text descriptions for skin features
         const mappedFeatures = {
-          skinColor: mapSkinColor(faceDescriptor[0]),
-          freckles: mapFreckles(faceDescriptor[1]),
-          wrinkles: mapWrinkles(faceDescriptor[2]),
-          // Add more features as needed
+          // skinColor: mapSkinColor(Math.abs(skinColorValue).toFixed(1)),
+          wrinkles: mapWrinkles(Math.abs(wrinklesValue).toFixed(1)),
+          acne: mapAcne(Math.abs(acneValue).toFixed(1)),
+          pores: mapPores(Math.abs(poresValue).toFixed(1)),
+          pigmentation: mapPigmentation(Math.abs(pigmentationValue).toFixed(1)),
         };
 
         // Update state with mapped features

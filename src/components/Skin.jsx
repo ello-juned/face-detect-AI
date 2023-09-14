@@ -1,9 +1,9 @@
 import React from "react";
 import bgImg from "../assets/bg.jpeg";
+import { featureData } from "../common";
+import { CircularProgressbar } from "react-circular-progressbar";
 
 const Skin = ({ skinFeatures }) => {
-  const { skinColor, freckles, wrinkles } = skinFeatures;
-  console.log("skinColor", skinColor);
   return (
     <div
       className="flex flex-col text-white justify-between gap-2 p-2 w-full bg-cover bg-center bg-no-repeat"
@@ -11,36 +11,24 @@ const Skin = ({ skinFeatures }) => {
     >
       <h2 className="text-2xl">Skin Analysis</h2>
 
-      <div className="w-full h-[160px] flex flex-row justify-center items-center text-center gap-4">
-        {/* Add skin color information */}
-        <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
-          {skinColor && (
-            <>
-              <p className="text-lg">{skinColor}</p>
-              <p className="text-xl tracking-wide">Skin Color</p>
-            </>
-          )}
-        </div>
-
-        {/* Add freckles information */}
-        <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
-          {freckles && (
-            <>
-              <p className="text-lg">{freckles}</p>
-              <p className="text-xl tracking-wide">Freckles</p>
-            </>
-          )}
-        </div>
-
-        {/* Add wrinkles information */}
-        <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
-          {wrinkles && (
-            <>
-              <p className="text-lg">{wrinkles}</p>
-              <p className="text-xl tracking-wide">Wrinkles</p>
-            </>
-          )}
-        </div>
+      <div className="w-full h-[160px] flex flex-row justify-center items-center text-center gap-4 mt-2">
+        {featureData?.map((feature) => (
+          <div
+            key={feature.name}
+            className="w-full h-[160px] flex flex-col justify-center items-center text-center gap-10"
+          >
+            {skinFeatures[feature?.name] && (
+              <>
+                <CircularProgressbar
+                  value={skinFeatures[feature?.name]}
+                  maxValue={5}
+                  text={skinFeatures[feature?.name]}
+                />
+                <p className="text-xl tracking-wide">{feature?.label}</p>
+              </>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,0 +1,17 @@
+/* // custom css for  CircularProgressbar */
+.CircularProgressbar-path {
+  stroke: red !important;
+}
+.CircularProgressbar-trail {
+  stroke: rgb(188, 187, 187) !important;
+}
+.CircularProgressbar-text {
+  fill: white !important;
+}
+.CircularProgressbar-background {
+  fill: green !important;
+}
+
+.CircularProgressbar-text {
+  font-size: 30px !important;
+}
