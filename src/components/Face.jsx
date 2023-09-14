@@ -10,13 +10,13 @@ const Face = (props) => {
 
   return (
     <div
-      className="flex flex-col   text-white justify-between gap-2 p-2 w-full bg-cover bg-center bg-no-repeat"
+      className="flex flex-col h-full  text-white justify-between gap-2 p-2 w-full bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <h2 className="text-2xl ">Face AI</h2>
 
-      <div className="flex flex-row">
-        <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-4">
+      <div className="flex flex-row ">
+        <div className="w-full  flex flex-col justify-center items-center text-center  gap-8">
           {gender && (
             <>
               <img
@@ -33,20 +33,20 @@ const Face = (props) => {
           )}
         </div>
 
-        <div className="w-full h-[160px]    flex flex-col justify-center items-center text-center gap-10">
+        <div className="w-full  flex flex-col justify-center items-center text-center gap-10">
           {age && (
             <>
-              <p className="text-lg">{Math.round(age?.toFixed(1))}</p>
+              <p className="text-4xl">{Math.round(age?.toFixed(1))}</p>
               <p className="text-xl  tracking-wide">Age</p>
             </>
           )}
         </div>
 
-        <div className="w-full h-[160px]   flex flex-col justify-center items-center text-center gap-10">
+        <div className="w-full  flex flex-col justify-center items-center text-center gap-10">
           {expressions.length > 0 && (
             <>
               <p className="text-lg">{expressions}</p>
-              <p className="text-xl tracking-wide">Expression</p>
+              <p className="text-xl tracking-wide mt-3">Expression</p>
             </>
           )}
         </div>

@@ -3,13 +3,8 @@ import * as faceapi from "face-api.js";
 import Loading from "./Loading";
 import Face from "./Face";
 import Skin from "./Skin";
-import {
-  mapAcne,
-  mapPigmentation,
-  mapPores,
-  // mapSkinColor,
-  mapWrinkles,
-} from "../common";
+import { mapAcne, mapPigmentation, mapPores, mapWrinkles } from "../common";
+import Lifestyle from "./Lifestyle";
 
 const WebcamComponent = () => {
   const [initializing, setInitializing] = useState(true);
@@ -104,7 +99,6 @@ const WebcamComponent = () => {
 
         // Map numerical values to text descriptions for skin features
         const mappedFeatures = {
-          // skinColor: mapSkinColor(Math.abs(skinColorValue).toFixed(1)),
           wrinkles: mapWrinkles(Math.abs(wrinklesValue).toFixed(1)),
           acne: mapAcne(Math.abs(acneValue).toFixed(1)),
           pores: mapPores(Math.abs(poresValue).toFixed(1)),
@@ -144,14 +138,17 @@ const WebcamComponent = () => {
           className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col gap-2 bg-blue-100">
-        {/* separated component for face only (age, expressions, and gender) */}
-        {!initializing && (
-          <>
+
+      <div className="flex flex-col gap-2 h-screen bg-gray-800 w-7/12">
+        <div className="flex-grow">
+          {!initializing && (
             <Face expressions={expressions} age={age} gender={gender} />
-            <Skin skinFeatures={skinFeatures} />
-          </>
-        )}
+          )}
+        </div>
+        <div className="flex-grow">{!initializing && <Lifestyle />}</div>
+        <div className="flex-grow">
+          {!initializing && <Skin skinFeatures={skinFeatures} />}
+        </div>
       </div>
     </div>
   );

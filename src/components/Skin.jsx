@@ -6,16 +6,16 @@ import { CircularProgressbar } from "react-circular-progressbar";
 const Skin = ({ skinFeatures }) => {
   return (
     <div
-      className="flex flex-col text-white justify-between gap-2 p-2 w-full bg-cover bg-center bg-no-repeat"
+      className="flex flex-col h-full text-white justify-between gap-2 p-2 w-full   bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
-      <h2 className="text-2xl">Skin Analysis</h2>
+      <h2 className="text-2xl">Skin AI</h2>
 
-      <div className="w-full h-[160px] flex flex-row justify-center items-center text-center gap-4 mt-2">
+      <div className="w-full  flex flex-row justify-center items-center text-center ">
         {featureData?.map((feature) => (
           <div
             key={feature.name}
-            className="w-full h-[160px] flex flex-col justify-center items-center text-center gap-10"
+            className="w-full  flex flex-col justify-center items-center text-center gap-8 p-5 "
           >
             {skinFeatures[feature?.name] && (
               <>
@@ -24,7 +24,7 @@ const Skin = ({ skinFeatures }) => {
                   maxValue={5}
                   text={skinFeatures[feature?.name]}
                 />
-                <p className="text-xl tracking-wide">{feature?.label}</p>
+                <p className="text-2xl tracking-wider ">{feature?.label}</p>
               </>
             )}
           </div>
