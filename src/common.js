@@ -2,9 +2,9 @@
 export const featureData = [
   //   { name: "skinColor", label: "Skin Color" },
   { name: "wrinkles", label: "Wrinkles" },
-  { name: "acne", label: "Acne" },
-  { name: "pores", label: "Pores" },
   { name: "pigmentation", label: "Pigmentation" },
+  { name: "pores", label: "Pores" },
+  { name: "acne", label: "Acne" },
 ];
 // Define mapping functions for skin features
 export const mapSkinColor = (value) => {

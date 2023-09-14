@@ -144,7 +144,7 @@ const WebcamComponent = () => {
           className="absolute w-full h-full"
         ></canvas>
       </div>
-      <div className="w-7/12 h-full flex flex-col gap-4 bg-blue-100">
+      <div className="w-7/12 h-full flex flex-col gap-2 bg-blue-100">
         {/* separated component for face only (age, expressions, and gender) */}
         {!initializing && (
           <>
