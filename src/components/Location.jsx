@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import locationImg from "../assets/location.png";
 
-const Location = () => {
-  const [locationData, setLocationData] = useState(null);
-  const [city, setCity] = useState(""); // Use state to store the city name
-
-  console.log("locationData", locationData);
+const Location = ({ locationData, setLocationData, city, setCity }) => {
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
