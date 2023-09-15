@@ -10,7 +10,7 @@ const Skin = ({ skinFeatures }) => {
       className="flex flex-col h-full text-white justify-between  w-full   bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
-      <h2 className="text-2xl m-1  flex flex-row items-center">
+      <h2 className="text-2xl m-1 ml-3  flex flex-row items-center">
         <MdOutlineArrowDropDown size={35} /> Skin AI
       </h2>
 
