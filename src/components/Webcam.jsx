@@ -139,7 +139,7 @@ const WebcamComponent = () => {
         ></canvas>
       </div>
 
-      <div className="flex flex-col gap-2 h-screen bg-gray-800 w-7/12 ">
+      <div className="flex flex-col gap-2 h-screen bg-gray-900 w-7/12 ">
         <div className="h-[30%]">
           {!initializing && (
             <Face expressions={expressions} age={age} gender={gender} />

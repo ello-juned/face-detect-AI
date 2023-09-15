@@ -15,7 +15,7 @@ const Lifestyle = () => {
       <h2 className="text-2xl ml-1  flex flex-row items-center">
         <MdOutlineArrowDropDown size={35} /> Lifestyle AI
       </h2>
-      <div className="flex flex-row justify-between w-[80%] m-auto">
+      <div className="flex flex-row justify-between w-[85%] m-auto">
         <Location
           locationData={locationData}
           setLocationData={setLocationData}
