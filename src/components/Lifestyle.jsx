@@ -18,7 +18,7 @@ const Lifestyle = () => {
               <h2 className="text-xl text-primaryTextColor font-semibold">
                 {data.title}
               </h2>
-              <h2 className="text-2xl ">{data.value}</h2>
+              <h2 className="text-4xl ">{data.value}</h2>
               <h2 className="text-2xl ">{data.description}</h2>
             </>
           </div>

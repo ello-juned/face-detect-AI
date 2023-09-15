@@ -119,7 +119,7 @@ const WebcamComponent = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center border-2 border-white overflow-hidden">
+    <div className="h-screen w-screen flex flex-row justify-between items-center overflow-hidden ">
       {initializing && <Loading />}
 
       <div className="h-full w-5/12 flex justify-center items-center relative">
@@ -139,7 +139,7 @@ const WebcamComponent = () => {
         ></canvas>
       </div>
 
-      <div className="flex flex-col gap-2 h-screen bg-gray-800 w-7/12">
+      <div className="flex flex-col gap-2 h-screen bg-gray-800 w-7/12 p-1">
         <div className="h-[30%]">
           {!initializing && (
             <Face expressions={expressions} age={age} gender={gender} />

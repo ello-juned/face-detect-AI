@@ -26,7 +26,7 @@ const Face = (props) => {
                 height={100}
                 className=""
               />
-              <p className="text-2xl tracking-wide text-primaryTextColor ">
+              <p className="text-2xl tracking-wide text-primaryTextColor font-semibold ">
                 {gender.charAt(0).toUpperCase() + gender.slice(1)}
               </p>
             </>
@@ -36,8 +36,8 @@ const Face = (props) => {
         <div className="w-full   flex flex-col justify-between  items-center text-center ">
           {age && (
             <>
-              <p className="text-3xl">{Math.round(age?.toFixed(1))}</p>
-              <p className="text-2xl  tracking-wide text-primaryTextColor ">
+              <p className="text-4xl">{Math.round(age?.toFixed(1))}</p>
+              <p className="text-2xl  tracking-wide text-primaryTextColor font-semibold ">
                 Age
               </p>
             </>
@@ -48,7 +48,7 @@ const Face = (props) => {
           {expressions.length > 0 && (
             <>
               <p className="text-2xl">{expressions}</p>
-              <p className="text-2xl tracking-wide mt-3 text-primaryTextColor ">
+              <p className="text-2xl tracking-wide mt-3 text-primaryTextColor font-semibold ">
                 Expression
               </p>
             </>
