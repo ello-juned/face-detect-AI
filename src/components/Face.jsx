@@ -3,6 +3,9 @@ import maleIcon from "../assets/maleIcon.png";
 import femaleIcon from "../assets/femaleicon.png";
 import bgImg from "../assets/bg.png";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import { expressionEmojis } from "../common";
+
+// angry, disgusted, fearful, happy, neutral, sad, surprised
 
 const Face = (props) => {
   const { expressions, age, gender } = props; // descrtructing all props...
@@ -50,7 +53,9 @@ const Face = (props) => {
         <div className="w-full  flex flex-col justify-around items-center text-center">
           {expressions.length > 0 && (
             <>
-              <p className="text-2xl mt-2">{expressions}</p>
+              <p className="text-2xl mt-2">
+                {expressions} {expressionEmojis[expressions[0]]}
+              </p>
               <p className="text-2xl tracking-wide mt-16 text-primaryTextColor font-semibold ">
                 EXPRESSION
               </p>

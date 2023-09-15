@@ -89,13 +89,8 @@ const WebcamComponent = () => {
         );
         const faceDescriptor = resizedDetections[0].descriptor;
 
-        const [
-          // skinColorValue,
-          wrinklesValue,
-          poresValue,
-          acneValue,
-          pigmentationValue,
-        ] = faceDescriptor;
+        const [wrinklesValue, poresValue, acneValue, pigmentationValue] =
+          faceDescriptor;
 
         // Map numerical values to text descriptions for skin features
         const mappedFeatures = {

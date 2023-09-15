@@ -1,12 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import bgImg from "../assets/bg.png";
 import Location from "./Location";
-import { dummyData } from "../common";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import axios from "axios";
+import { getWeatherDescription } from "../common";
 
 const Lifestyle = () => {
   const [locationData, setLocationData] = useState(null);
   const [city, setCity] = useState(""); // Use state to store the city name
+  const [weatherData, setWeatherData] = useState([
+    { title: "AIR QUALITY", value: "", description: "Unhealthy" },
+    { title: "UV INDEX", value: "", description: "Very High" },
+  ]); // Use state to store weather data
+
+  useEffect(() => {
+    if (city) {
+      // Define the API endpoint
+      const apiKey = import.meta.env.VITE_REACT_APP_WEATHER_API_KEY;
+
+      const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+
+      // Make the API request using Axios
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          // Extract the required data from the API response
+          const uvIndex = response.data.current.uv;
+          const airQuality = response.data.current.wind_degree;
+
+          // Get descriptions based on UV and air quality values
+          const { uvDescription, airQualityDescription } =
+            getWeatherDescription(uvIndex, airQuality);
+
+          // Create a new weatherData object with the updated values
+          const newData = [
+            {
+              title: "AIR QUALITY",
+              value: airQuality,
+              description: airQualityDescription,
+            },
+            { title: "UV INDEX", value: uvIndex, description: uvDescription },
+          ];
+
+          // Set the updated weather data in state
+          setWeatherData(newData);
+        })
+        .catch((error) => {
+          console.error("Error fetching weather data:", error);
+        });
+    }
+  }, [city]);
+
   return (
     <div
       className="flex flex-col h-full text-white justify-between gap-2 p-2 w-full bg-cover bg-center bg-no-repeat"
@@ -23,9 +67,11 @@ const Lifestyle = () => {
           setCity={setCity}
         />
         {city &&
-          locationData &&
-          dummyData.map((data, index) => (
-            <div className="flex flex-col justify-between items-center text-center gap-3 p-2">
+          weatherData.map((data, index) => (
+            <div
+              key={index}
+              className="flex flex-col justify-between items-center text-center gap-3 p-2"
+            >
               <>
                 <h2 className="text-xl text-primaryTextColor font-semibold">
                   {data.title}

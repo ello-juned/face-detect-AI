@@ -57,15 +57,39 @@ export const mapPigmentation = (pigmentationValue) => {
   }
 };
 
-export const dummyData = [
-  {
-    title: "AIR QUALITY",
-    value: 120,
-    description: "Unhealthy",
-  },
-  {
-    title: "UV INDEX",
-    value: 12,
-    description: "Very High",
-  },
-];
+// Function for add emojies based on ex[ressions...
+export const expressionEmojis = {
+  angry: "😡",
+  disgusted: "🤢",
+  fearful: "😨",
+  happy: "😄",
+  neutral: "😐",
+  sad: "😢",
+  surprised: "😲",
+};
+
+// Function to determine description based on UV and air quality values
+export const getWeatherDescription = (uv, airQuality) => {
+  let uvDescription = "";
+  let airQualityDescription = "";
+
+  // Determine UV description
+  if (uv < 3) {
+    uvDescription = "Low";
+  } else if (uv >= 3 && uv < 6) {
+    uvDescription = "Moderate";
+  } else {
+    uvDescription = "High";
+  }
+
+  // Determine air quality description
+  if (airQuality < 50) {
+    airQualityDescription = "Good";
+  } else if (airQuality >= 50 && airQuality < 100) {
+    airQualityDescription = "Moderate";
+  } else {
+    airQualityDescription = "Unhealthy";
+  }
+
+  return { uvDescription, airQualityDescription };
+};

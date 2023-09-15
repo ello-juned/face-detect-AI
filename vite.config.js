@@ -8,5 +8,9 @@ export default defineConfig({
     "process.env.VITE_REACT_APP_IP_API_KEY": JSON.stringify(
       process.env.VITE_REACT_APP_IP_API_KEY
     ),
+
+    "process.env.VITE_REACT_APP_WEATHER_API_KEY": JSON.stringify(
+      process.env.VITE_REACT_APP_WEATHER_API_KEY
+    ),
   },
 });
