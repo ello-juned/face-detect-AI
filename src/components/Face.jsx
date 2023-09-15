@@ -54,7 +54,10 @@ const Face = (props) => {
           {expressions.length > 0 && (
             <>
               <p className="text-2xl mt-2">
-                {expressions} {expressionEmojis[expressions[0]]}
+                {expressions}{" "}
+                <span className="text-xl">
+                  {expressionEmojis[expressions[0]]}
+                </span>
               </p>
               <p className="text-2xl tracking-wide mt-16 text-primaryTextColor font-semibold ">
                 EXPRESSION

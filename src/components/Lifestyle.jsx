@@ -15,16 +15,11 @@ const Lifestyle = () => {
 
   useEffect(() => {
     if (city) {
-      // Define the API endpoint
       const apiKey = import.meta.env.VITE_REACT_APP_WEATHER_API_KEY;
-
       const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
-
-      // Make the API request using Axios
       axios
         .get(apiUrl)
         .then((response) => {
-          // Extract the required data from the API response
           const uvIndex = response.data.current.uv;
           const airQuality = response.data.current.wind_degree;
 
@@ -32,7 +27,6 @@ const Lifestyle = () => {
           const { uvDescription, airQualityDescription } =
             getWeatherDescription(uvIndex, airQuality);
 
-          // Create a new weatherData object with the updated values
           const newData = [
             {
               title: "AIR QUALITY",
@@ -42,7 +36,6 @@ const Lifestyle = () => {
             { title: "UV INDEX", value: uvIndex, description: uvDescription },
           ];
 
-          // Set the updated weather data in state
           setWeatherData(newData);
         })
         .catch((error) => {
