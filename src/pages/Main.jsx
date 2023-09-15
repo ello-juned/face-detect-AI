@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
-import Loading from "./Loading";
-import Face from "./Face";
-import Skin from "./Skin";
+import Loading from "../components/Loading";
+import Face from "../components/Face";
+import Skin from "../components/Skin";
 import { mapAcne, mapPigmentation, mapPores, mapWrinkles } from "../common";
-import Lifestyle from "./Lifestyle";
+import Lifestyle from "../components/Lifestyle";
 
-const WebcamComponent = () => {
+const Main = () => {
   const [initializing, setInitializing] = useState(true);
   const [expressions, setExpressions] = useState([]);
   const [age, setAge] = useState(null);
@@ -149,4 +149,4 @@ const WebcamComponent = () => {
   );
 };
 
-export default WebcamComponent;
+export default Main;
