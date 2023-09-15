@@ -11,11 +11,11 @@ const Skin = ({ skinFeatures }) => {
     >
       <h2 className="text-2xl ml-3">Skin AI</h2>
 
-      <div className="w-full  flex flex-row  justify-center items-center text-center gap-6">
+      <div className="w-full  flex flex-row  justify-center items-center text-center gap-6 ">
         {featureData?.map((feature) => (
           <div
             key={feature.name}
-            className="w-full m-5  flex flex-col justify-center items-center text-center gap-5 "
+            className="w-full m-5  flex flex-col justify-center items-center text-center gap-3"
           >
             {skinFeatures[feature?.name] && (
               <>
@@ -24,6 +24,7 @@ const Skin = ({ skinFeatures }) => {
                   maxValue={5}
                   text={skinFeatures[feature?.name]}
                   strokeWidth={5}
+                  className=" p-4"
                 />
                 <p className="text-2xl tracking-wider text-primaryTextColor font-semibold ">
                   {feature?.label}
