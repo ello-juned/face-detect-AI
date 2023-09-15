@@ -10,16 +10,16 @@ const Lifestyle = () => {
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <h2 className="text-2xl ml-1">Lifestyle AI</h2>
-      <div className="flex flex-row justify-between ml-4 ">
+      <div className="flex flex-row justify-between w-[80%] m-auto">
         <Location />
         {dummyData.map((data, index) => (
           <div className="flex flex-col justify-between items-center text-center gap-3 p-2">
             <>
-              <h2 className="text-2xl text-primaryTextColor font-semibold">
+              <h2 className="text-xl text-primaryTextColor font-semibold">
                 {data.title}
               </h2>
-              <h2 className="text-2xl tracking-wide">{data.value}</h2>
-              <h2 className="text-2xl tracking-wide">{data.description}</h2>
+              <h2 className="text-2xl ">{data.value}</h2>
+              <h2 className="text-2xl ">{data.description}</h2>
             </>
           </div>
         ))}
