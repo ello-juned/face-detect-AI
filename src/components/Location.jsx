@@ -37,8 +37,8 @@ const Location = ({ locationData, setLocationData, city, setCity }) => {
     <div className="flex flex-col justify-center items-center text-center gap-3 p-2">
       {city && locationData && (
         <>
-          <h2 className="text-2xl text-primaryTextColor font-semibold">
-            Location
+          <h2 className="text-xl text-primaryTextColor font-semibold">
+            LOCATION
           </h2>
           <img src={locationImg} width={60} height={60} />
           <h2 className="text-2xl tracking-wide">{city}</h2>
