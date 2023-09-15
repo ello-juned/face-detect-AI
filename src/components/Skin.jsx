@@ -25,7 +25,7 @@ const Skin = ({ skinFeatures }) => {
           <div
             key={feature.name}
             className={`w-full m-3 cursor-pointer p-1 flex flex-col justify-center items-center text-center gap-1 ${
-              activeCard === index
+              skinFeatures[feature.name] !== "" && activeCard === index
                 ? "bg-blue-400 bg-opacity-30 border-2 border-sky-600 rounded-xl"
                 : ""
             }`}
