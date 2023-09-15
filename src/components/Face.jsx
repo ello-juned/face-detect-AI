@@ -1,6 +1,6 @@
 import React from "react";
 import maleIcon from "../assets/maleIcon.png";
-import femalIcon from "../assets/femaleIcon.png";
+import femaleIcon from "../assets/femaleicon.png";
 import bgImg from "../assets/bg.png";
 
 const Face = (props) => {
@@ -20,7 +20,7 @@ const Face = (props) => {
           {gender && (
             <>
               <img
-                src={isMale ? maleIcon : femalIcon}
+                src={isMale ? maleIcon : femaleIcon}
                 alt="female"
                 width={100}
                 height={100}
